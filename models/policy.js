@@ -5,18 +5,18 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PolicySchema = Schema({
-    belongToClient: String,
+    belongToClient: Schema.Types.ObjectId,
     //person that has the policy
-    insured: String,
+    name_insured: String,
     insured_doc: String,
-    birth_insured: { type: Date, default: Date.now },
-    update_date : { type: Date, default: Date.now },
+    birth_insured:String,
+    update_date :String,
     plate : String,
     //model=year of the car
     model : Number,
     brand: String,
     line: String,
-    cc: Number,
+    engine_cylinder:String,
     type_vehicle: String,
     fasecolda: String,
     endorsement: String,
@@ -30,14 +30,14 @@ var PolicySchema = Schema({
     number_policy: String,
     //issued = company who issue the policy
     issued : String,
-    policy_start : { type: Date, default: Date.now },
-    policy_end : { type: Date, default: Date.now },
+    policy_start :String,
+    policy_end :String,
     value_prima : Number,
     payment_type: String,
     policy_renovation_month : String,
     //revicion tecnicomecanica rtm, año revision tecnicomecanica, vencimiento soat mes dia
-    soat_expiration: { type: Date, default: Date.now },
-    rtm_expiration : { type: Date, default: Date.now },
+    soat_expiration: String,
+    rtm_expiration : String,
     observation: String,
 });
 

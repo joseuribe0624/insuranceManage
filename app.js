@@ -9,6 +9,7 @@ var app = express();
 //load file routes
 var user_routes = require('./routes/user');
 var client_routes = require('./routes/client');
+var policy_routes = require('./routes/policy');
 
 //middlewares
 app.use(bodyParser.urlencoded({extended:false}));
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 //rewrite routes
 app.use('/api', user_routes);
 app.use('/api', client_routes);
+app.use('/api', policy_routes);
 
 //export module
 module.exports = app;

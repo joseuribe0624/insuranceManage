@@ -80,12 +80,10 @@ var controller = {
     },
 
     updateClient: function(req, res){
-        var userId = req.params.id;
         var clientId = req.params.idClient;
         var params = req.body;
         //search and updta doc
         Client.findByIdAndUpdate(clientId, params, {new:true}, (err, clientUpdate) => {
-            console.log(clientUpdate)
             if(err){
                 return res.status(200).send({
                     status: 'error',
@@ -111,6 +109,35 @@ var controller = {
             if(!clientRemoved) return res.satus(404).send({message:'no se ha podido guardar'});
    
             return res.status(200).send({client:clientRemoved})
+        });
+    },
+
+    getClient: function(req,res){
+        var clientId= req.params.id;
+
+        if(clientId==null){
+            return res.status(404).send({message: 'El documento no existe.'});
+        }
+        //esto es un metodo de moongose buscar en la documentacion
+        Client.findById(clientId,(err,client) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+
+            if(!client) return res.status(404).send({message: 'El documento no existe.'});
+
+            return res.status(200).send({
+                client
+            });
+        });
+    },
+
+    getClients: function(req,res){
+        //find take all the clients in this case
+        var userId= req.params.id;
+        // find({year:2019})
+        Client.find({belong_to_user: userId}).exec((err,clients) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+            if(!clients) return res.status(404).send({message: 'El documento no existe.'});
+            return res.status(200).send({clients});
         });
     },
 }
