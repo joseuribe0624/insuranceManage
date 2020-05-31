@@ -125,11 +125,10 @@ var controller = {
         });
     },
     deletePolicy: function(req,res){
-        var policyId = req.params.id;
+        var policyId = req.params.id; 
         Policy.findByIdAndRemove(policyId, (err, policyRemoved) =>{
             if(err) return res.status(500).send({message:'Error al guardar el doc'});
             if(!policyRemoved) return res.satus(404).send({message:'no se ha podido guardar'});
-   
             return res.status(200).send({policy:policyRemoved})
         });
     },

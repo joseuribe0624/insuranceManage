@@ -6,10 +6,14 @@ var bodyParser = require('body-parser');
 
 //express
 var app = express();
+
+
 //load file routes
 var user_routes = require('./routes/user');
 var client_routes = require('./routes/client');
 var policy_routes = require('./routes/policy');
+
+var email = require('./services/email.js');
 
 //middlewares
 app.use(bodyParser.urlencoded({extended:false}));
