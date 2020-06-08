@@ -1,6 +1,6 @@
 'use strict'
 
-var Client = require('../models/client')
+var Client = require('../models/client');
 var validator = require('validator');
 /*saveClient : this function store a client, this take the id of the user by url param, and
 checks if the client is not already create, this is made with a query with user id and client_doc*/
@@ -140,6 +140,7 @@ var controller = {
             return res.status(200).send({clients});
         });
     },
+
 }
 
 module.exports = controller;

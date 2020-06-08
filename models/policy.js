@@ -34,7 +34,7 @@ var PolicySchema = Schema({
     policy_end :String,
     value_prima : Number,
     payment_type: String,
-    policy_renovation_month : String,
+    policy_renovation_month : Number,
     //revicion tecnicomecanica rtm, año revision tecnicomecanica, vencimiento soat mes dia
     soat_expiration: String,
     rtm_expiration : String,

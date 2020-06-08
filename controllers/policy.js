@@ -132,7 +132,17 @@ var controller = {
             return res.status(200).send({policy:policyRemoved})
         });
     },
- 
+    getPolicyByRenovation: function(req,res){
+        console.log("FUCKKKKKKKKKKKKK");
+        //var params = req.body;
+        var renovation = req.params.date;
+        console.log(renovation);
+        Policy.find({policy_renovation_month:renovation}).exec((err,policies) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+            if(!policies) return res.status(404).send({message: 'El documento no existe.'});
+            return res.status(200).send({policies});
+        });
+    },
 }
 
 module.exports = controller;
