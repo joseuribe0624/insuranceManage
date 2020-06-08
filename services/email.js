@@ -15,32 +15,28 @@ const auth = {
 //where i want to connect
 let transporter = nodemailer.createTransport(nodemailMailgun(auth));
 
+async function get_policies(month) {
+    try {
+      const response = await axios.get('http://localhost:3999/api/policies_by_renovation/',{params:{date:month}})
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+}
 
 cron.schedule('* * * * *', () => {
     var date = new Date();
-    //type month = number
     //+1 cause getMonth() start from 0
     var month = date.getMonth()+1;
-   /* get_policies_renovation(month)
-        .then((result) => res=result)
-        .catch((e) => console.log("ha surgido un error"))*/
-    
-    axios.get('http://localhost:3999/api/policies_by_renovation/',{
-        params:{
-            date:month
-        }
-        })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });  
-   
+    var policies;
 
+    (async function(){
+        var policies = await get_policies(month);
+    });
+    //get_policies(month)
+    //    .then((res)=>  );
+    
+    console.log(policies);
     //console.log(res);
    /*var emailReceiver = 'joseuribe0624@gmail.com';
     //from: 'Excited User <me@samples.mailgun.org>',

@@ -133,10 +133,7 @@ var controller = {
         });
     },
     getPolicyByRenovation: function(req,res){
-        console.log("FUCKKKKKKKKKKKKK");
-        //var params = req.body;
-        var renovation = req.params.date;
-        console.log(renovation);
+        var renovation = req.query.date;
         Policy.find({policy_renovation_month:renovation}).exec((err,policies) => {
             if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
             if(!policies) return res.status(404).send({message: 'El documento no existe.'});
