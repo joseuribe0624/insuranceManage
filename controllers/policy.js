@@ -11,16 +11,18 @@ var controller = {
         try{
             var validate_name_insured = !validator.isEmpty(params.name_insured);
             var validate_insured_doc = !validator.isEmpty(params.insured_doc);
+            var validate_policy_type = !validator.isEmpty(params.policy_type);
             var validate_policy_renovation_month = !validator.isEmpty(params.policy_renovation_month);
         }catch(err){
            return res.status(200).send({
                 message: "No se completo los datos requeridos"
             });
         }
-        if(validate_name_insured && validate_insured_doc && validate_policy_renovation_month){
+        if(validate_name_insured && validate_insured_doc && validate_policy_renovation_month && validate_policy_type){
             var policy = new Policy();
             policy.name_insured = params.name_insured;
             policy.insured_doc = params.insured_doc;
+            policy.policy_type = params.policy_type;
             policy.birth_insured = params.birth_insured;
             policy.update_date = params.update_date;
             policy.plate  = params.plate;

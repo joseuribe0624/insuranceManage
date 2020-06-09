@@ -5,6 +5,8 @@ var nodemailer = require('nodemailer');
 var nodemailMailgun = require('nodemailer-mailgun-transport');
 const axios = require('axios');
 
+var policies;
+
 const auth = {
     auth: {
         api_key: '9b1cd01fc04bd66bad4b14264b52a105-7fba8a4e-91ac05f3',
@@ -28,16 +30,19 @@ cron.schedule('* * * * *', () => {
     var date = new Date();
     //+1 cause getMonth() start from 0
     var month = date.getMonth()+1;
-    var policies;
-
-    (async function(){
-        var policies = await get_policies(month);
-    });
-    //get_policies(month)
-    //    .then((res)=>  );
-    
-    console.log(policies);
-    //console.log(res);
+    (async () =>{
+        policies = await get_policies(month);      
+    })();    
+    //console.log(policies);
+    var data = [];
+    for (let i = 0; i < policies.length; i++){
+        var policy={
+            type : policies[i].policy_type,
+            expire : policies[i].polipolicy_end,
+        }
+        data.push(policy);
+    }
+    console.log(data)
    /*var emailReceiver = 'joseuribe0624@gmail.com';
     //from: 'Excited User <me@samples.mailgun.org>',
     var mailOptions = {

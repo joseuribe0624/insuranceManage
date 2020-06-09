@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var PolicySchema = Schema({
     belongToClient: Schema.Types.ObjectId,
     //person that has the policy
+    policy_type: String,
     name_insured: String,
     insured_doc: String,
     birth_insured:String,
