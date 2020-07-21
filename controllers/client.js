@@ -8,11 +8,10 @@ checks if the client is not already create, this is made with a query with user 
 
 var controller = {
     saveClient: function(req, res){
-       
-        var userId = req.params.id;
         var params = req.body;
          //valid the data this is going to return true or false
         try{
+            var validate_belong_to_user = !validator.isEmpty(params.belong_to_user);
             var validate_referred_from = !validator.isEmpty(params.referred_from);
             var validate_client_name = !validator.isEmpty(params.client_name);
             var validate_email_client = !validator.isEmpty(params.email_client) && validator.isEmail(params.email_client);
@@ -28,7 +27,7 @@ var controller = {
             });
         }
 
-        if(validate_referred_from && validate_client_name && validate_email_client && validate_birth_client &&
+        if(validate_belong_to_user && validate_referred_from && validate_client_name && validate_email_client && validate_birth_client &&
             validate_client_doc && validate_address && validate_city && validate_phone && validate_cell_phone ){
             var client = new Client();
             client.referred_from = params.referred_from;
@@ -40,7 +39,7 @@ var controller = {
             client.city = params.city;
             client.phone = params.phone;
             client.cell_phone = params.cell_phone;
-            client.belong_to_user = userId;
+            client.belong_to_user = params.belong_to_user;
             Client.findOne({belong_to_user: client.belong_to_user, client_doc: client.client_doc}, 
                 function (err, issetClient){
                 if(err){
@@ -114,11 +113,9 @@ var controller = {
 
     getClient: function(req,res){
         var clientId= req.params.id;
-
         if(clientId==null){
             return res.status(404).send({message: 'El documento no existe.'});
         }
-        //esto es un metodo de moongose buscar en la documentacion
         Client.findById(clientId,(err,client) => {
             if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
 
@@ -138,6 +135,15 @@ var controller = {
             if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
             if(!clients) return res.status(404).send({message: 'El documento no existe.'});
             return res.status(200).send({clients});
+        });
+    },
+
+    getClientsBirthday: function(req,res){
+        var birthday = req.query.date;
+        Policy.find({birth_client:birthday}).exec((err,policies) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+            if(!policies) return res.status(404).send({message: 'El documento no existe.'});
+            return res.status(200).send({policies});
         });
     },
 

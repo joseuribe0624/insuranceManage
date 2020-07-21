@@ -107,7 +107,9 @@ var controller =  {
                     if(params.gettoken){
                         //return the data
                         return res.status(200).send({
-                            token: jwt.createToken(user)
+                            token: jwt.createToken(user),
+                            email: user.email,
+                            id: user._id
                         });
                     }else{
                         //clean objt
@@ -130,6 +132,56 @@ var controller =  {
         });
     },
 
+
+    login2: function(req, res){
+        //get the params of the petition
+       var params = req.body;
+        //validate the data
+       var validate_email =  !validator.isEmpty(params.email) && validator.isEmail(params.email);
+       var validate_password =  !validator.isEmpty(params.password);
+       if(!validate_email || !validate_password){
+           return res.status(200).send({
+               message:"Los datos son incorrectos"
+           });
+       }
+        //search user that match with the email
+       User.findOne({email: params.email.toLowerCase()}, (err,user) => {
+           if(err){
+               return res.status(500).send({
+                   message:"Error al identificarse",
+               });
+           }
+           if(!user){
+               return res.status(404).send({
+                   message:"El usuario no existe",
+               });
+           }
+           //if it is found,
+           //proove the password ( match with email and password / bcrypt)
+           bcrypt.compare(params.password, user.password, function(err,check){
+               //if it is right,
+               if(check){
+                   //generate token jwt and return it
+                    return res.status(200).send({
+                        token: jwt.createToken(user),
+                        email: user.email,
+                        id: user._id,
+                        name: user.name,
+                        surname: user.surname,
+                    });
+                      
+               }else{
+                   return res.status(200).send({
+                       message:"Las credenciales no son correctas",
+                   });
+
+               }
+              
+           });
+         
+       });
+   },
+   
     update: function(req, res){
         //create middleware to prove the jwt token, and put it to the router
         var params = req.body;
