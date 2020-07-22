@@ -6,7 +6,6 @@ var validator = require('validator');
 var controller = {
     savePolicy: function(req, res){
         var clientId = req.params.id;
-        var clientEmail = req.params.email;
         var params = req.body;
          //valid the data this is going to return true or false
         try{
@@ -51,7 +50,7 @@ var controller = {
             policy.rtm_expiration  = params.rtm_expiration;
             policy.observation = params.observation;
             policy.belongToClient = clientId;
-            policy.email_client = clientEmail;
+            policy.email_client = params.email_client;
 
             policy.save((err, policyStored) => {
                 if(err){
