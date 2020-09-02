@@ -145,6 +145,7 @@ var controller =  {
            });
        }
         //search user that match with the email
+        console.log(params);
        User.findOne({email: params.email.toLowerCase()}, (err,user) => {
            if(err){
                return res.status(500).send({

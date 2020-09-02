@@ -41,8 +41,8 @@ var controller = {
             policy.state = params.state;
             policy.number_policy = params.number_policy;
             policy.issued  = params.issued;
-            policy.policy_start = params.policy_star; 
-            policy.policy_end = params.policy_en;
+            policy.policy_start = params.policy_start; 
+            policy.policy_end = params.policy_end;
             policy.value_prima  = params.value_prima;
             policy.payment_type = params.payment_type;
             policy.policy_renovation_month  = params.policy_renovation_month;
@@ -51,7 +51,8 @@ var controller = {
             policy.observation = params.observation;
             policy.belongToClient = clientId;
             policy.email_client = params.email_client;
-
+            policy.belongToUser = params.belongToUser;
+  
             policy.save((err, policyStored) => {
                 if(err){
                     return res.status(500).send({
@@ -80,6 +81,7 @@ var controller = {
         var policyId = req.params.id;
         var params = req.body;
         //search and updta doc
+        console.log(params);
         Policy.findByIdAndUpdate(policyId, params, {new:true}, (err, policyUpdate) => {
             if(err){
                 return res.status(200).send({
@@ -127,6 +129,24 @@ var controller = {
             return res.status(200).send({policies});
         });
     },
+
+    getPoliciesToExpired: function(req,res){
+        //find take all the clients in this case
+        var params = req.body;
+        var userId= req.params.id;
+        var date = req.params.date;
+        console.log(date);
+        console.log(userId);
+        //search from this date that is going to contain month and a year: yy-mm
+       // var date = params.date;
+        Policy.find({belongToUser: userId, policy_end:new RegExp(date)}).exec((err,policies) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+            if(!policies) return res.status(404).send({message: 'El documento no existe.'});
+            return res.status(200).send({policies});
+        });
+    },
+
+
     deletePolicy: function(req,res){
         var policyId = req.params.id; 
         Policy.findByIdAndRemove(policyId, (err, policyRemoved) =>{
@@ -143,6 +163,20 @@ var controller = {
             return res.status(200).send({policies});
         });
     },
+
+    /*getPolicyAuto: function(req,res){
+        //find take all the clients in this case
+        var clientId= req.params.id;
+        // find({year:2019})
+        Policy.find({belongToClient: clientId, policy_type:"automovil"}).exec((err,policies) => {
+            if(err) return res.status(500).send({message: 'Error al devolder los datos.'});
+            if(!policies) return res.status(404).send({message: 'El documento no existe.'});
+            return res.status(200).send({
+                policies
+                
+            });
+        });
+    },*/
 }
 
 module.exports = controller;

@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 
 var PolicySchema = Schema({
     belongToClient: Schema.Types.ObjectId,
+    belongToUser: Schema.Types.ObjectId,
     email_client: String,
     //person that has the policy
     policy_type: String,
@@ -32,8 +33,8 @@ var PolicySchema = Schema({
     number_policy: String,
     //issued = company who issue the policy
     issued : String,
-    policy_start :String,
-    policy_end :String,
+    policy_start : String,
+    policy_end : String,
     value_prima : Number,
     payment_type: String,
     policy_renovation_month : Number,

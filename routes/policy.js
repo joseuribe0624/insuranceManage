@@ -13,4 +13,8 @@ router.get('/get_policy/:id', md_auth.authenticated, PolicyController.getPolicy)
 router.get('/get_policies/:id', md_auth.authenticated, PolicyController.getPolicies);
 router.delete('/delete_policy/:id', md_auth.authenticated, PolicyController.deletePolicy);
 router.get('/policies_by_renovation/', PolicyController.getPolicyByRenovation);
+router.get('/policies_expired/:id/:date', PolicyController.getPoliciesToExpired);
+
+
+
 module.exports = router;
